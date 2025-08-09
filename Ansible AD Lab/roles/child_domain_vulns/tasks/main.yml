@@ -1,0 +1,31 @@
+#- name: Add description to vuln user
+#  microsoft.ad.user:
+#    name: "{{ user6 }}"
+#    description: "{{ pass6 }}"
+
+
+#- name: Add kerberostable user
+#  microsoft.ad.user:
+#    name: "{{ domain_admin_user_child }}"
+#    spn:
+#      set:
+#      - "{{ kerberoast_service_principal_name }}"
+
+
+#- name: Add user to privileged group to abuse
+#  microsoft.ad.user:
+#    name: "{{ user1 }}"
+#    groups:
+#      set:
+#      - Backup Operators
+
+      
+- name: Add asreproast to user
+  win_shell: Get-ADUser -Identity "{{ user2_child }}" | Set-ADAccountControl -DoesNotRequirePreAuth:$true
+
+
+#- name: Add kerberoast to user
+#  win_shell: Set-ADUser -Identity "{{ user3 }}" -ServicePrincipalNames @{Add='"{{ kerberoast_service_principal_name }}"'}
+
+
+

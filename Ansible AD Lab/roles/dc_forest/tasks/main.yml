@@ -1,0 +1,98 @@
+---
+
+- name: Ensure that Admin is present with a valid password
+  microsoft.ad.user:
+    name: "{{ domain_admin_forest }}"
+    password: "{{ ansible_password }}"
+    password_never_expires: yes
+    state: present
+  ignore_errors: yes
+
+- name: Ensure the server is a domain controller
+  microsoft.ad.domain_controller:
+    dns_domain_name: "{{ domain_name_forest }}"
+    domain_admin_user: "{{ domain_admin_forest }}@{{ domain_name_forest }}"
+    domain_admin_password: "{{ ansible_password }}"
+    safe_mode_password: "{{ random_password_forest }}"
+    state: domain_controller
+    #log_path: c:\ansible_microsoft.ad.domain_controller.txt
+  register: check_domain_controller
+
+# Creating a Domain Controller requires a reboot
+- name: Reboot to complete domain controller setup
+  win_reboot:
+    shutdown_timeout: 600
+    reboot_timeout: 600
+    post_reboot_delay: 300
+  when: check_domain_controller.changed
+
+#Creating users present in the Domain
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user1_forest }}"
+    password: "{{ pass1_forest }}"
+    state: present
+    path: "{{ domain_path_forest }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user2_forest }}"
+    password: "{{ pass2_forest }}"
+    state: present
+    path: "{{ domain_path_forest }}"
+       
+
+- name: Creation of Domain Admin User
+  microsoft.ad.user:
+    name: "{{ domain_admin_user_forest }}"
+    password: "{{ domain_admin_password_forest }}"
+    state: present
+    path: "{{ domain_path_forest }}"
+    groups:
+      set: 
+      - Admins. del dominio
+
+- name: Creation of groups
+  microsoft.ad.group:
+    name: "{{ group1_forest }}"
+    scope: global
+    state: present
+
+- name: Creation of groups
+  microsoft.ad.group:
+    name: "{{ group2_forest }}"
+    scope: global
+    state: present
+
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: Helena
+    groups:
+      add:
+      - "Admins. del dominio"
+
+- name: Set configure dns
+  win_dns_client:
+    adapter_names: '*'
+    ipv4_addresses: 
+    - "{{ ip_dc_forest }}"
+#    - "{{ ip_dc2 }}"
+   # log_path: C:\dns_log.txt
+
+- name: Copy RDP GPO
+  win_copy: 
+    src: "{5E04D535-1290-4AA6-9FE5-82A7C70A82DB}" 
+    dest: C:\Users\Administrador\Downloads\
+  ignore_errors: yes
+   
+- name: "Change the hostname to {{hostname}}"
+  win_hostname:
+    name: "{{inventory_hostname}}"
+  register: win_hostname
+  
+- name: Reboot if needed
+  win_reboot:
+    reboot_timeout: 600
+    post_reboot_delay: 100
+  when: win_hostname.reboot_required

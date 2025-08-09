@@ -1,0 +1,10 @@
+---
+
+# Install AD
+- name: Create new AD domain
+  microsoft.ad.domain:
+    dns_domain_name: "{{ domain_name_forest }}"
+    domain_netbios_name: "{{ domain_netbios_name_forest }}"
+    safe_mode_password: "{{ random_password_forest }}"
+    reboot: true
+

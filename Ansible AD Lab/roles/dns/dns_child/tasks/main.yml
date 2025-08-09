@@ -1,0 +1,4 @@
+###JUST FOR CHILD DOMAINS
+- name: Set DNS forwarder
+  win_shell: Add-DnsServerConditionalForwarderZone -Name {{ domain_name }} -ReplicationScope "Forest" -MasterServer {{ ip_dc }}
+  ignore_errors: yes

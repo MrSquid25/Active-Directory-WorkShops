@@ -1,0 +1,82 @@
+---
+
+# Creating a Domain Controller requires a reboot
+- name: Wait until port 5985 is present
+  pause:
+    minutes: 8
+
+- name: Wait until port 5985 is present
+  win_wait_for:
+    port: 5985
+    #delay: 300
+    sleep: 10
+    timeout: 1000
+
+- name: Ensure that Admin is present with a valid password
+  microsoft.ad.user:
+    name: "{{ domain_admin_child }}"
+    password: "{{ ansible_password }}"
+    password_never_expires: yes
+    state: present
+  ignore_errors: yes
+
+#- name: Ensure the server is a domain controller
+#  microsoft.ad.domain_controller:
+#    dns_domain_name: "{{ domain_name_child }}"
+#    domain_admin_user: "{{ domain_admin_child }}@{{ domain_name_child }}"
+#    domain_admin_password: "{{ ansible_password }}"
+#    safe_mode_password: "{{ random_password_child }}"
+#    state: domain_controller
+    #log_path: c:\ansible_microsoft.ad.domain_controller.txt
+#  register: check_domain_controller
+
+# Creating a Domain Controller requires a reboot
+#- name: Reboot to complete domain controller setup
+#  win_reboot:
+#    shutdown_timeout: 600
+#    reboot_timeout: 600
+#    post_reboot_delay: 300
+#  when: check_domain_controller.changed
+
+#Creating users present in the Domain
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user1_child }}"
+    password: "{{ pass1_child }}"
+    state: present
+    path: "{{ domain_path_child }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user2_child }}"
+    password: "{{ pass2_child }}"
+    state: present
+    path: "{{ domain_path_child }}"
+    
+- name: Copy RDP GPO
+  win_copy: 
+    src: "{41A75C3D-DFD2-4F99-BC0D-63ECFB0C07BC}"
+    dest: C:\Users\Administrador\Downloads\
+  ignore_errors: yes 
+
+#  loop:
+#     - name: Antonio
+#     - name: Laura
+#     - name: Pedro
+#     - name: Thomas
+#     - name: Daniel
+#     - name: Wiktor
+
+
+- name: Creation of Domain Admin User
+  microsoft.ad.user:
+    name: "{{ domain_admin_user_child }}"
+    password: "{{ ansible_password }}"
+    state: present
+    path: "{{ domain_path_child }}"
+    groups:
+      set: 
+      - Admins. del dominio
+      
+
