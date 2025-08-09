@@ -1,0 +1,8 @@
+- name: Copy RDP
+  win_copy: 
+   src:  DC-02.rdp
+   dest: 'C:\Users\{{ user4 }}\Desktop'
+- name: Copy pass
+  win_copy: 
+    src: pass.txt
+    dest: 'C:\Users\{{ user4 }}\Desktop'

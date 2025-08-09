@@ -1,0 +1,53 @@
+# Add roles
+
+# Create vulns
+
+- name: "Setup vulnerabilities DC parent"
+  hosts: domain_controllers_parent
+  roles:
+    #- { role: 'ps', tags: 'asreproast', ps_script: asrep.ps1} #Actualizar todos los ps1
+    #- { role: 'ps', tags: 'acl', ps_script: acl.ps1}
+    #- { role: 'ps', tags: 'acl', ps_script: delegation.ps1}
+    - { role: 'parent_domain_vulns'} 
+  vars:
+    script_path: "scripts"
+
+#- name: "Setup vulnerabilities DC child"
+#  hosts: domain_controllers_child
+#  roles:
+#    - { role: 'ps', tags: 'child', ps_script: asrep.ps1} #Actualizar todos los ps1
+#    - { role: 'ps', tags: 'child', ps_script: acl_child.ps1}
+#    - { role: 'ps', tags: 'child', ps_script: delegation.ps1}
+#    - { role: 'child_domain_vulns', tags: 'child'} 
+#  vars:
+ #   script_path: "scripts"
+
+- name: "Setup vulnerabilities DC forest"
+  hosts: domain_controllers_forest
+  roles:
+#    - { role: 'ps', tags: 'asreproast', ps_script: asrep.ps1} #Actualizar todos los ps1
+#    - { role: 'ps', tags: 'acl', ps_script: acl.ps1}
+#    - { role: 'ps', tags: 'acl', ps_script: delegation.ps1}
+    - { role: 'forest_domain_vulns'} 
+#  vars:
+#    script_path: "scripts"
+
+  
+    
+- hosts: servers
+  tasks:
+    - include_role:
+       name: web_vulns
+      when: "'servers_web' in group_names"
+#    - include_role: 
+#        name: sql_vulns
+#      when: "'servers_sql' in group_names"
+    - include_role: 
+        name: file_vulns
+      when: "'servers_file' in group_names"
+
+#- hosts: clients
+#  tasks:
+#    - include_role:
+#        name: clients_vulns
+#      when: "'clients' in group_names"

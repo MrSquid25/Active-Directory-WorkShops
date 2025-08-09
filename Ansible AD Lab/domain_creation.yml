@@ -1,0 +1,62 @@
+---
+#Create domain and create domain objets 
+- hosts: domain_controllers_parent
+  roles: 
+  - { role: domain }
+  - { role: dc_parent, tags: "dc" }
+  - { role: 'ps', tags: 'rdp', ps_script: "rdp.ps1"} #Habilitamos PTH por RDP
+  - { role: 'ps', tags: 'GPO', ps_script: "GPO_parent.ps1"} #Desplegamos todas las GPOs que tocan -- Actualizarlas en labo generico
+
+#- hosts: domain_controllers_child
+#  roles:
+#  - { role: domain_child, tags: 'child' }
+#  - { role: 'ps', tags: 'child', ps_script: "create_child.ps1"} # Actualizarlas en labo generico
+#   - { role: wait, tags: 'child' }
+#  - { role: 'ps', tags: 'child', ps_script: "create_child2.ps1"} # Actualizarlas en labo generico
+#  - { role: dc_child, tags: 'child' }
+#  - { role: 'ps', tags: 'rdp', ps_script: "rdp.ps1"} #Habilitamos PTH por RDP
+#  - { role: 'ps', tags: 'GPO', ps_script: "GPO_child.ps1"} #Desplegamos todas las GPOs que tocan -- Actualizarlas en labo generico
+
+- hosts: domain_controllers_forest
+  roles:
+  - { role: domain_forest }
+  - { role: dc_forest, tags: "dc2" }
+  - { role: 'ps', tags: 'rdp', ps_script: "rdp.ps1"} #Habilitamos PTH por RDP
+  - { role: 'ps', tags: 'GPO', ps_script: "GPO_forest.ps1"} #Desplegamos todas las GPOs que tocan -- Actualizarlas en labo generico
+  
+- hosts: domain_controllers_parent
+  roles:
+  - { role: dns/dns_parent }
+
+- hosts: domain_controllers_forest
+  roles:
+  - { role: dns/dns_forest }
+  
+#- hosts: domain_controllers_child
+#  roles:
+#  - { role: dns/dns_child }
+
+#Añadimos los DNS segun el tipo de logica que tenga el dominio     
+#    - include_role:
+#        name: dns/dns_parent
+#      when: "'domain_controllers_parent' in group_names" #Domain creation
+#    - include_role:
+#        name: dns/dns_forest
+#      when: "'domain_controllers_forest' in group_names" #Domain objects creation
+#    - include_role:
+#        name: dns/dns_child
+#      when: "'domain_controllers_child' in group_names" #Domain objects creation
+      
+# Configure the DC to prepare the domain
+#- hosts: windows
+#  tasks:
+#    - include_role:
+#        name: domain
+#      when: "'domain_controllers_parent' in group_names" #Domain creation
+#    - include_role:
+#        name: domain_forest
+#      when: "'domain_controllers_forest' in group_names" #Domain objects creation
+#    - include_role:
+#        name: domain_child
+#      when: "'domain_controllers_child' in group_names" #Domain objects creation
+ 

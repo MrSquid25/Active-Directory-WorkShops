@@ -1,0 +1,11 @@
+- name: Quitar internet a todos los equipos
+  hosts: windows
+  serial: 1
+  tasks:
+  - name: Quitar adaptador interno
+    win_shell: $adapter = (get-netipaddress | where {$_.IpAddress -like '169.*'}).InterfaceAlias; Disable-NetAdapter -Name $adapter -Confirm:$false 
+  - name: Disable IPv6
+    win_shell: Disable-NetAdapterBinding -Name "*" -ComponentID ms_tcpip6
+
+  ignore_errors: yes
+

@@ -1,0 +1,7 @@
+# Domain forest creation
+- hosts: domain_controllers_forest
+  roles:
+  - { role: 'ps', tags: 'forest', ps_script: create_forest.ps1}
+  vars:
+   script_path: "scripts"    
+

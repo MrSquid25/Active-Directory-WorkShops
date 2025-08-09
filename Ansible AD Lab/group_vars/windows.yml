@@ -1,0 +1,112 @@
+
+# Ansible user
+ansible_user: Administrador
+
+# best practice would be to encrypt this using Ansible vault
+ansible_password: Passw0rd!
+
+
+domain_admin: Administrador
+domain_admin_password: Passw0rd! #Cambiar
+domain_admin_password_final: SuperPass123! #PONER
+admin_domain_admin_password_final: xYWrhvBnDEImx5gIG6f31234
+random_password: Passw0rd!
+dns_domain_name: secure.domain
+domain_name: secure.domain
+domain_netbios_name: SECURE
+domain_admin_user: Alejandro
+domain_path: cn=Users,dc=secure,dc=domain #CAMBIAR SEGUN EL DOMINIO
+ip_dc: 192.168.1.103
+#ip_dc2: 
+
+#Vuln values
+vuln_folder: Codigo
+group_vuln_folder: Repositorios
+#kerberoast_service_principal_name: TIME/FILESERVER.zerolyxn.local
+
+
+domain_admin_child: Administrador
+domain_admin_child_password: Passw0rd!
+random_password_child: Passw0rd!
+dns_domain_name_child: pool.secure.local
+domain_name_child: pool.secure.local
+domain_netbios_name_child: POOL
+domain_admin_user_child: Nachete
+domain_path_child: cn=Users,dc=pool,dc=zerolyxn,dc=local 
+ip_dc_child: 192.168.0.173
+domain_admin_child_password_final: Passw0rd!
+
+domain_admin_forest: Administrador
+domain_admin_password_forest: Passw0rd! 
+admin_domain_admin_password_forest_final: Passw0rd!
+random_password_forest: Passw0rd!
+dns_domain_name_forest: dev.local
+domain_name_forest: dev.local
+domain_netbios_name_forest: DEV
+domain_admin_user_forest: Alba
+domain_path_forest: cn=Users,dc=dev,dc=local #CAMBIAR SEGUN EL DOMINIO
+ip_dc_forest: 192.168.1.109
+domain_admin_password_forest_final: SuperSecure123! #PONER
+
+user1: Jose
+pass1: Pass123! 
+
+user2: Maria	
+pass2: Febrero2024!
+
+user3: Pedro
+pass3: RootedC0n!
+
+user4: Luis
+pass4: Changeme1?
+
+user5: Jorge
+pass5: SexyLady12!
+
+user6: Raquel
+pass6: Pass123!
+
+user7: Laura
+pass7: Pass456!
+
+alumno1: Alumno01
+
+alumno2: Alumno02
+
+alumno3: Alumno03
+
+alumno4: Alumno04
+passalumno: Passw0rd!
+
+adm_local_alumnos: adm
+pass_local_alumnos: Passw0rd!
+
+user1_child: Luisito
+pass1_child: LuisGuapo1!
+
+user2_child: Silvia	
+pass2_child: Febrero2024!
+
+user1_forest: Mauricio
+pass1_forest: Pass123!
+
+user2_forest: Helena
+pass2_forest: Marzo2024!
+
+group1_parent: Repositorios
+
+group2_parent: Proyecto_Desarrollo
+
+group3_parent: Backups
+
+#group1_child: 
+
+group1_forest: Desarrollo
+group2_forest: Git
+
+
+# Setup some base values for connectivity to windows hosts
+# Using basic authentication because we're using a local account.
+ansible_winrm_transport: ntlm
+ansible_port: 5985
+ansible_connection: winrm

@@ -1,0 +1,62 @@
+- name: Add description to vuln user
+  microsoft.ad.user:
+    name: "{{ user6 }}"
+    description: "{{ pass6 }} #Delete"
+
+
+#- name: Add kerberostable user
+#  microsoft.ad.user:
+#    name: "{{ user4 }}"
+#    spn:
+#      set:
+#      - "{{ kerberoast_service_principal_name }}"
+
+
+#Añadir usuarios a gruposd el dominio para darle sentido 
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group1_parent }}"
+      - "Usuarios del dominio"
+  loop:
+    - "{{ user1 }}"
+    - "{{ alumno1 }}"
+    - "{{ alumno2 }}"
+    - "{{ alumno3 }}"
+    - "{{ alumno4 }}"
+    
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group2_parent }}"
+      - "Usuarios del dominio"
+  loop:
+    - "{{ user2 }}"
+    - "{{ user3 }}"
+    - "{{ user4 }}"
+
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group3_parent }}"
+      - "Usuarios del dominio"
+  loop:
+    - "{{ user5 }}"
+    - "{{ user6 }}"
+    - "{{ user7 }}"
+      
+- name: Add asreproast to user
+  win_shell: Get-ADUser -Identity "{{ user3 }}" | Set-ADAccountControl -DoesNotRequirePreAuth:$true
+
+
+#- name: Add kerberoast to user
+#  win_shell: Set-ADUser -Identity "{{ user3 }}" -ServicePrincipalNames @{Add='"{{ kerberoast_service_principal_name }}"'}
+
+
+

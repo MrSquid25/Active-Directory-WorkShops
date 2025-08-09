@@ -1,0 +1,4 @@
+$user= 'SECURE\Alejandro';
+$password1= ConvertTo-SecureString 'SuperPass123!' -AsPlainText -Force;
+$psCred= New-Object System.Management.Automation.PSCredential -ArgumentList ($user, $password1)
+Enter-PSSession -ComputerName DC-01 -Credential $psCred

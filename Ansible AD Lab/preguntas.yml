@@ -1,0 +1,37 @@
+---
+
+- name: Desplegar preguntas
+  hosts: ALUMNOS-01
+  tasks:
+  - name: Pegar Word
+    win_copy: 
+      src: Preguntas_labo_Rooted.docx
+      dest: C:\Users\Alumno01\Desktop\
+  ignore_errors: yes
+
+- name: Desplegar preguntas
+  hosts: ALUMNOS-02
+  tasks:
+  - name: Pegar Word
+    win_copy: 
+      src: Preguntas_labo_Rooted.docx
+      dest: C:\Users\Alumno02\Desktop\
+  ignore_errors: yes
+
+- name: Desplegar preguntas
+  hosts: ALUMNOS-03
+  tasks:
+  - name: Pegar Word
+    win_copy: 
+      src: Preguntas_labo_Rooted.docx
+      dest: C:\Users\Alumno03\Desktop\
+  ignore_errors: yes
+  
+- name: Desplegar preguntas
+  hosts: ALUMNOS-04
+  tasks:
+  - name: Pegar Word
+    win_copy: 
+      src: Preguntas_labo_Rooted.docx
+      dest: C:\Users\Alumno04\Desktop\
+  ignore_errors: yes

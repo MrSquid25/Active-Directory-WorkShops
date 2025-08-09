@@ -1,0 +1,38 @@
+---
+# House cleaning after deploying
+
+- name: "Block local admin"
+  hosts: servers, clients
+  tasks:    
+  - name: Bloquear admin
+    win_shell: net user Administrador /active:no
+
+#- name: "Remove ansible user"
+#  hosts: clients
+#  tasks:    
+#  - name: remove ansible
+#    win_shell: net user ansible /delete
+#    ignore_errors: yes
+#  - name: Cambiar password local de admin
+#    win_shell: net user Administrador Passw0rd! #Poner pass que toque  
+     
+- name: "Change domain user passwords"
+  hosts: domain_controllers_parent
+  tasks:
+  - name: Borrar GPO
+    win_shell: del -Recurse "C:\Users\Administrador\Downloads\{C3C5EE69-F7BC-4B58-8408-58ED93398961}\*" -Force; del -Recurse "C:\Users\Administrador\Downloads\{C3C5EE69-F7BC-4B58-8408-58ED93398961}" -Force
+    ignore_errors: yes
+
+  - name: "Cambiar pass Administrador"
+    win_shell: 'net user Administrador {{ admin_domain_admin_password_final }}; net user {{ domain_admin_user }} {{ domain_admin_password_final }}'
+   
+- name: "Change domain user passwords"
+  hosts: domain_controllers_forest
+  tasks:
+  - name: Borrar GPO 
+    win_shell: del -Recurse "C:\Users\Administrador\Downloads\{5E04D535-1290-4AA6-9FE5-82A7C70A82DB}\*" -Force; del -Recurse "C:\Users\Administrador\Downloads\{5E04D535-1290-4AA6-9FE5-82A7C70A82DB}" -Force
+
+  - name: "Cambiar pass Administrador"
+    win_shell: 'net user Administrador {{ admin_domain_admin_password_forest_final }}; net user {{ domain_admin_user_forest }} {{ domain_admin_password_forest_final }}'
+
+

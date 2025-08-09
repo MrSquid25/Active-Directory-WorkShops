@@ -1,0 +1,53 @@
+---
+# Gestion accesos
+
+    
+- name: "Habilitar accesos WEB"
+  hosts: WEB
+  tasks:
+  - name: 'Add {{ user4 }} to WinRM Group'
+    win_shell: 'net localgroup "Usuarios de administración remota" {{ user4 }} /add ; net localgroup "Usuarios de escritorio remoto" {{ user4 }} /add'
+    ignore_errors: yes
+    
+- name: "Habilitar accesos FILESERVER"
+  hosts: FILESERVER
+  tasks:
+  - name: 'Add {{ user6 }} to Win-RM Group'
+    win_shell: 'net localgroup "Usuarios de administración remota" {{ user6 }} /add ; net localgroup "Usuarios de escritorio remoto" {{ user6 }} /add'
+    ignore_errors: yes
+      
+- name: "Habilitar accesos ALUMNOS-02"
+  hosts: ALUMNOS-02
+  tasks:
+  - name: Add Alumno02 to WinRM Group
+    win_shell: net localgroup 'Usuarios de administración remota' Alumno02 /add ; net localgroup 'Usuarios de escritorio remoto' Alumno02 /add
+  - name: Create adm user
+    win_shell: $password= ConvertTo-SecureString 'Passw0rd!' -AsPlainText -Force; New-LocalUser -Name adm -Password $password ; net localgroup Administradores adm /add
+        
+- name: "Habilitar accesos ALUMNOS-01"
+  hosts: ALUMNOS-01
+  tasks:
+  - name: Add user Alumno01 to Win-RM Group
+    win_shell: net localgroup 'Usuarios de administración remota' Alumno01 /add ; net localgroup 'Usuarios de escritorio remoto' Alumno01 /add
+  - name: Create adm user
+    win_shell: $password= ConvertTo-SecureString 'Passw0rd!' -AsPlainText -Force; New-LocalUser -Name adm -Password $password ; net localgroup Administradores adm /add
+
+
+- name: "Habilitar accesos ALUMNOS-03"
+  hosts: ALUMNOS-03
+  tasks:
+  - name: Add Alumno03 to Win-RM Group
+    win_shell: net localgroup 'Usuarios de administración remota' Alumno03 /add; net localgroup 'Usuarios de escritorio remoto' Alumno03 /add
+  - name: Create adm user
+    win_shell: $password= ConvertTo-SecureString 'Passw0rd!' -AsPlainText -Force; New-LocalUser -Name adm -Password $password ; net localgroup Administradores adm /add
+
+- name: "Habilitar accesos ALUMNOS-04"
+  hosts: ALUMNOS-04
+  tasks:
+  - name: Add user Alumno04 to Win-RM Group
+    win_shell: net localgroup 'Usuarios de administración remota' Alumno04 /add ; net localgroup 'Usuarios de escritorio remoto' Alumno04 /add 
+  - name: Create adm user
+    win_shell: $password= ConvertTo-SecureString 'Passw0rd!' -AsPlainText -Force; New-LocalUser -Name adm -Password $password ; net localgroup Administradores adm /add
+
+   
+

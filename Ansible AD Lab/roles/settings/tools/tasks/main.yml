@@ -1,0 +1,52 @@
+# Instalacion binarios necesarios en cada maquina
+
+
+#- name: Copy tools
+#  win_copy: 
+#    src: Tools.zip
+#    dest: C:\
+
+- name: "Copy JDK installer"
+  win_copy: 
+    src: jdk-11.0.15.1_windows-x64_bin.exe
+    dest: C:\
+
+- name: "Install JDK"
+  win_shell: C:\jdk-11.0.15.1_windows-x64_bin.exe /s
+
+- name: Borrar binarios
+  win_shell: del C:\jdk-11.0.15.1_windows-x64_bin.exe
+
+- name: Copy Neo4j
+  win_copy: 
+    src: neo4j-community-4.4.8-windows
+    dest: C:\
+
+- name: Install Neo4j
+  win_shell: C:\neo4j-community-4.4.8-windows\neo4j-community-4.4.8\bin\neo4j.bat install-service
+
+- name: Defender Folder Exclusion
+  win_shell: 'Add-MpPreference -ExclusionPath "C:\tools"'
+  retries: 3
+  delay: 1
+  register: result
+  until: result is succeeded
+
+- name: Subir la carpeta Tools_maliciosas 
+  win_copy:
+    src: tools
+    dest: C:\
+
+- name: Start neo4j
+  win_psexec: 
+    command: sc start neo4j
+    executable: C:\tools\PsExec.exe
+    system: yes
+    wait: no
+
+- name: Extract Bloodhound zip
+  win_shell: Expand-Archive -Path C:\tools\BloodHound-win32-x64.zip -DestinationPath C:\tools\
+
+- name: Delete PsExec
+  win_shell: del C:\tools\BloodHound-win32-x64.zip
+

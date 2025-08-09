@@ -1,0 +1,31 @@
+#Execute DLL patching to allow more than 2 RDP sessions at the same time
+
+- name: Copy mimikatz
+  win_copy: 
+    src: mimikatz.exe
+    dest: C:\mimikatz.exe
+  ignore_errors: yes
+
+- name: Execute Mimi
+  win_shell: 'C:\mimikatz.exe privilege::debug token::elevate ts::MultiRDP exit'
+  retries: 3
+  delay: 1
+  register: result
+  until: result is succeeded
+  ignore_errors: yes
+  
+- name: Borrar Mimi
+  win_shell: 'del C:\mimikatz.exe'
+  retries: 3
+  delay: 1
+  register: result
+  until: result is succeeded
+  ignore_errors: yes 
+    
+#- name: Enable Defender
+#  win_shell: 'Set-MpPreference -DisableRealTimeMonitoring $False'
+#  retries: 3
+#  delay: 1
+#  register: result
+#  until: result is succeeded
+#  ignore_errors: yes

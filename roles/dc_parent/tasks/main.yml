@@ -1,0 +1,168 @@
+---
+
+- name: Ensure that Admin is present with a valid password
+  microsoft.ad.user:
+    name: "{{ domain_admin }}"
+    password: "{{ ansible_password }}"
+    password_never_expires: yes
+    state: present
+  ignore_errors: yes
+
+- name: Ensure the server is a domain controller
+  microsoft.ad.domain_controller:
+    dns_domain_name: "{{ domain_name }}"
+    domain_admin_user: "{{ domain_admin }}@{{ domain_name }}"
+    domain_admin_password: "{{ ansible_password }}"
+    safe_mode_password: "{{ random_password }}"
+    state: domain_controller
+    #log_path: c:\ansible_microsoft.ad.domain_controller.txt
+  register: check_domain_controller
+
+# Creating a Domain Controller requires a reboot
+- name: Reboot to complete domain controller setup
+  win_reboot:
+    shutdown_timeout: 600
+    reboot_timeout: 600
+    post_reboot_delay: 300
+  when: check_domain_controller.changed
+
+#Creating users present in the Domain
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user1 }}"
+    password: "{{ pass1 }}"
+    state: present
+    path: "{{ domain_path }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user2 }}"
+    password: "{{ pass2 }}"
+    state: present
+    path: "{{ domain_path }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user3 }}"
+    password: "{{ pass3 }}"
+    state: present
+    path: "{{ domain_path }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user4 }}"
+    password: "{{ pass4 }}"
+    state: present
+    path: "{{ domain_path }}"
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user5 }}"
+    password: "{{ pass5 }}"
+    state: present
+    path: "{{ domain_path }}"
+    
+ 
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user6 }}"
+    password: "{{ pass6 }}"
+    state: present
+    path: "{{ domain_path }}"    
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ user7 }}"
+    password: "{{ pass7 }}"
+    state: present
+    path: "{{ domain_path }}"    
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ alumno1 }}"
+    password: "{{ passalumno }}"
+    state: present
+    path: "{{ domain_path }}"    
+
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ alumno2 }}"
+    password: "{{ passalumno }}"
+    state: present
+    path: "{{ domain_path }}"  
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ alumno3 }}"
+    password: "{{ passalumno }}"
+    state: present
+    path: "{{ domain_path }}"  
+    
+- name: Creation of users
+  microsoft.ad.user:
+    name: "{{ alumno4 }}"
+    password: "{{ passalumno }}"
+    state: present
+    path: "{{ domain_path }}"  
+
+#  loop:
+#     - name: Antonio
+#     - name: Laura
+#     - name: Pedro
+#     - name: Thomas
+#     - name: Daniel
+#     - name: Wiktor
+
+- name: Creation of groups
+  microsoft.ad.group:
+    name: "{{ group1_parent }}"
+    scope: global
+    state: present
+
+- name: Creation of groups
+  microsoft.ad.group:
+    name: "{{ group2_parent }}"
+    scope: global
+    state: present
+    
+- name: Creation of groups
+  microsoft.ad.group:
+    name: "{{ group3_parent }}"
+    scope: global
+    state: present    
+    
+- name: Creation of Domain Admin User
+  microsoft.ad.user:
+    name: "{{ domain_admin_user }}"
+    password: "{{ domain_admin_password }}"
+    state: present
+    path: "{{ domain_path }}"
+    groups:
+      add: 
+      - Admins. del dominio
+      
+- name: Set configure dns
+  win_dns_client:
+    adapter_names: '*'
+    ipv4_addresses: 
+    - "{{ ip_dc }}"
+#    - "{{ ip_dc2 }}"
+   # log_path: C:\dns_log.txt
+
+- name: Copy RDP GPO
+  win_copy: 
+    src: "{C3C5EE69-F7BC-4B58-8408-58ED93398961}" 
+    dest: C:\Users\Administrador\Downloads\
+  ignore_errors: yes
+  
+- name: "Change the hostname to {{hostname}}"
+  win_hostname:
+    name: "{{inventory_hostname}}"
+  register: win_hostname
+  
+- name: Reboot if needed
+  win_reboot:
+    reboot_timeout: 600
+    post_reboot_delay: 100
+  when: win_hostname.reboot_required

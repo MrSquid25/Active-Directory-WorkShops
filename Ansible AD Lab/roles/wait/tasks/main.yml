@@ -1,0 +1,7 @@
+---
+
+# Creating a Domain Controller requires a reboot
+- name: Wait until port 5985 is present
+  pause:
+    minutes: 5
+

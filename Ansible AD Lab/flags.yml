@@ -1,0 +1,57 @@
+---
+### Flags files creation ###
+      
+- name: "Setup flags ALUMNOS-01, ALUMNOS-02, ALUMNOS-03, ALUMNOS-04"
+  hosts: clients
+  tasks: 
+  - name: Create flag
+    win_file: 
+      path: 'C:\Users\{{ adm_local_alumnos }}\Desktop\flag.txt'
+      state: touch
+  - name: Add Flag content
+    win_shell: 'echo "ROOTED{Admin_ya?}" >> C:\Users\{{ adm_local_alumnos }}\Desktop\flag.txt'
+
+- name: "Setup flags FILESERVER"
+  hosts: FILESERVER
+  tasks: 
+  - name: Create flag
+    win_file: 
+      path: 'C:\Users\{{ user6 }}\Desktop\flag.txt'
+      state: touch
+  - name: Add Flag content
+    win_shell: 'echo "ROOTED{Una_Descripcion_Muy_Adecuada}" >> C:\Users\{{ user6 }}\Desktop\flag.txt'
+
+
+- name: "Setup flags WEB"
+  hosts: WEB
+  tasks: 
+  
+  - name: Create flag
+    win_file: 
+      path: 'C:\Users\{{ user4 }}\Desktop\flag.txt'
+      state: touch
+  - name: Add Flag content
+    win_shell: 'echo "ROOTED{Carpetas_Compartidas_Para_Todos}" >> C:\Users\{{ user4 }}\Desktop\flag.txt'
+
+- name: "Setup flags DC-02"
+  hosts: DC-02
+  tasks: 
+  
+  - name: Create flag
+    win_file: 
+      path: 'C:\Users\{{ user2_forest }}\Desktop\flag.txt'
+      state: touch
+  - name: Add Flag content
+    win_shell: 'echo "ROOTED{Usa_Keepass!!!!}" >> C:\Users\{{ user2_forest }}\Desktop\flag.txt'
+
+- name: "Setup flags DC-01"
+  hosts: DC-01
+  tasks: 
+  
+  - name: Create flag
+    win_file: 
+      path: 'C:\Users\{{ domain_admin_user }}\Desktop\flag.txt'
+      state: touch
+  - name: Add Flag content
+    win_shell: 'echo "ROOTED{Historiales_Traviesos}" >> C:\Users\{{ domain_admin_user }}\Desktop\flag.txt'
+    

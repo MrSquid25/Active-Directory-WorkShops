@@ -1,0 +1,25 @@
+# Run common tasks on all Windows machines in parallel
+- hosts: windows
+  roles:
+  - { role: settings/defender }
+  - { role: settings/install_binaries, tags: 'bin' }
+  - { role: settings/wallpaper, tags: 'wallpaper' } #cambiamos el fondo 
+  - { role: 'ps', tags: 'rdp', ps_script: rdp.ps1} #Habilitamos PTH por RDP
+  - { role: settings/gpupdate }
+  - { role: settings/mimi }
+  vars:
+   script_path: "scripts"
+
+- hosts: clients
+  roles: 
+  - { role: settings/tools, tags: 'tools' } #Desplegamos todas las tools que tocan 
+  - { role: settings/wireshark, tags: 'bin' }
+
+#- hosts: domain_controllers_parent, clients, servers #Solo lo instalamos en el dominio principal
+#  roles:
+#  - { role: settings/laps_instalacion, tags: 'laps'} #Metemos LAPS en todos los equipos
+
+#- hosts: domain_controllers_parent #Instalacion de laps en todos los dominios (powershell)
+#  roles:
+#  - { role: settings/laps, tags: 'laps2'} 
+#  - { role: 'ps', tags: 'laps2', ps_script: GPO_LAPS.ps1}

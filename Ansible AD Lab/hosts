@@ -1,0 +1,43 @@
+[windows]
+[windows:children]
+domain_controllers_parent
+domain_controllers_forest
+domain_controllers_child
+servers
+servers_web
+servers_file
+clients
+
+
+
+[domain_controllers_parent]
+DC-01 ansible_host=192.168.1.103 #DC-01
+
+#[domain_controllers_child]
+#DC-POOL ansible_host=192.168.0.173 #SERVER-02
+
+[domain_controllers_forest]
+DC-02 ansible_host=192.168.1.109 #DC-02
+
+[domain_controllers]
+DC-01 ansible_host=192.168.1.103 #DC-01
+#DC-POOL ansible_host=192.168.0.173 #SERVER-02
+DC-02 ansible_host=192.168.1.109 #DC-02
+
+[servers]
+FILESERVER ansible_host=192.168.1.104 #FS
+WEB ansible_host=192.168.1.108 #WEB
+
+[servers_web]
+WEB ansible_host=192.168.1.108 #WEB
+
+[servers_file]
+FILESERVER ansible_host=192.168.1.104 #FS
+
+[servers_sql]
+
+[clients]
+ALUMNOS-01 ansible_host=192.168.1.105 #172.16.100.238 #Server-01
+ALUMNOS-02 ansible_host=192.168.1.106 #172.16.100.239 #Server-02
+ALUMNOS-03 ansible_host=192.168.1.110 #172.16.100.231 #SQL
+ALUMNOS-04 ansible_host=192.168.1.107 #172.16.100.234 #Server

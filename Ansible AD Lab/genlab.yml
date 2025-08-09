@@ -1,0 +1,17 @@
+---
+- import_playbook: apagar_red_interna.yml
+- import_playbook: domain_creation.yml
+- import_playbook: join_domain.yml 
+- import_playbook: domain_logic.yml 
+- import_playbook: roles.yml
+- import_playbook: common.yml 
+- import_playbook: gestionaccesos.yml 
+- import_playbook: crear_carpetas_usuarios.yml
+- import_playbook: vulns.yml
+- import_playbook: flags.yml
+- import_playbook: preguntas.yml  
+- import_playbook: limpieza.yml 
+- import_playbook: fin_despliegue.yml
+
+
+

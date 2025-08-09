@@ -1,0 +1,11 @@
+# Domain-join clients in parallel
+
+- hosts: windows
+  tasks:
+    - include_role:
+        name: servers
+      when: "'servers' in group_names"
+    - include_role: 
+        name: clients
+      when: "'clients' in group_names"
+

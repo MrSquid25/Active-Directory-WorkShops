@@ -1,0 +1,7 @@
+1) Abrir el navegador y entrar a https://localhost:7474
+2) Podremos iniciar sesion con neo4j/neo4j.
+3) Nos pedira cambiar la pass, poned neo
+4) Ejecutad bloodhound.exe. Entrad con el usuario neo4j/neo. 
+5) Lanzad sharphound contra el dominio. EL zip resultante, arrastrarlo sobre la interfaz de BH.
+6) A jugar.
+

@@ -1,0 +1,10 @@
+#Instalar las opciones de fileserver
+- name: Verify File Server Role is installed
+  win_feature:
+    name: File-Services, FS-FileServer
+    state: present
+    include_management_tools: True
+
+
+
+

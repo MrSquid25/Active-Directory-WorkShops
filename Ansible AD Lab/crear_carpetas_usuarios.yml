@@ -1,0 +1,189 @@
+---
+# Create sessiones BH
+
+- name: Copy file
+  hosts: windows
+  tasks:
+  - name: Copiar PsEXEC
+    win_copy: 
+      src: PsExec.exe
+      dest: C:\PsExec.exe
+ 
+- name: "Crear carpeta usuario generando una sesion en los equipos iniciales"
+  hosts: clients
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: "{{ adm_local_alumnos }}"
+      password: "{{ pass_local_alumnos }}"
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: "{{ adm_local_alumnos }}"
+      ansible_become_password: "{{ pass_local_alumnos }}"
+      
+- name: "Crear carpeta usuario generando una sesion en ALUMNOS-02"
+  hosts: ALUMNOS-02
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: SECURE\Alumno02
+      password: Passw0rd!
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: SECURE\Alumno02
+      ansible_become_password: Passw0rd!
+      
+      
+- name: "Crear carpeta usuario generando una sesion en ALUMNOS-01"
+  hosts: ALUMNOS-01
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: SECURE\Alumno01
+      password: Passw0rd!
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: SECURE\Alumno01
+      ansible_become_password: Passw0rd!
+
+
+
+- name: "Crear carpeta usuario generando una sesion en ALUMNOS-04"
+  hosts: ALUMNOS-04
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: SECURE\Alumno04
+      password: Passw0rd!
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: SECURE\Alumno04
+      ansible_become_password: Passw0rd!
+
+- name: "Crear carpeta usuario generando una sesion en ALUMNOS-03"
+  hosts: ALUMNOS-03
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: SECURE\Alumno03
+      password: Passw0rd!
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: SECURE\Alumno03
+      ansible_become_password: Passw0rd!
+
+- name: "Crear carpeta usuario generando una sesion en FILESERVER"
+  hosts: FILESERVER
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: '{{ domain_netbios_name }}\{{ user6 }}'
+      password: '{{ pass6 }}'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: '{{ domain_netbios_name }}\{{ user6 }}'
+      ansible_become_password: '{{ pass6 }}'
+
+- name: "Crear carpeta usuario generando una sesion en FILESERVER"
+  hosts: FILESERVER
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: '{{ domain_netbios_name }}\{{ user7 }}'
+      password: '{{ pass7 }}'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: '{{ domain_netbios_name }}\{{ user7 }}'
+      ansible_become_password: '{{ pass7 }}'
+
+- name: "Crear carpeta usuario generando una sesion en WEB"
+  hosts: WEB
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: '{{ domain_netbios_name }}\{{ user4 }}'
+      password: '{{ pass4 }}'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: '{{ domain_netbios_name }}\{{ user4 }}'
+      ansible_become_password: '{{ pass4 }}'
+
+- name: "Crear carpeta usuario generando una sesion en DC-02"
+  hosts: DC-02
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: '{{ domain_netbios_name_forest  }}\{{ user2_forest }}'
+      password: '{{ pass2_forest }}'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: '{{ domain_netbios_name_forest }}\{{ user2_forest }}'
+      ansible_become_password: '{{ pass2_forest }}'
+
+- name: "Crear carpeta usuario generando una sesion en DC-01"
+  hosts: DC-01
+  tasks:
+  - name: Sesiones BH
+    win_psexec: 
+      command: cmd.exe /c "calc.exe"
+      executable: C:\PsExec.exe
+      interactive: yes
+      wait: no
+      username: '{{ domain_netbios_name }}\{{ domain_admin_user }}'
+      password: '{{ domain_admin_password }}'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: '{{ domain_netbios_name }}\{{ domain_admin_user }}'
+      ansible_become_password: '{{ domain_admin_password }}'
+
+- name: Copy file
+  hosts: windows
+  tasks:
+  - name: Borrar PsEXEC
+    win_shell: del C:\PsExec.exe

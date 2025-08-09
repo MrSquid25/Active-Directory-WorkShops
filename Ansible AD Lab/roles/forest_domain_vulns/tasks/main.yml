@@ -1,0 +1,65 @@
+#- name: Add description to vuln user
+#  microsoft.ad.user:
+#    name: "{{ user6 }}"
+#    description: "{{ pass6 }}"
+
+
+#- name: Add kerberostable user
+#  microsoft.ad.user:
+#    name: "{{ domain_admin_user_forest }}"
+#    spn:
+#      set:
+#      - "{{ kerberoast_service_principal_name }}"
+
+
+#- name: Add user to privileged group to abuse
+#  microsoft.ad.user:
+#    name: "{{ user1 }}"
+#    groups:
+#      set:
+#      - Backup Operators
+
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group1_forest }}"
+      - "Usuarios del dominio"
+  loop:
+    - "{{ user1_forest }}"
+
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group2_forest }}"
+      - "Usuarios del dominio"
+  loop:
+    - "{{ user2_forest }}"
+
+- name: Add user to privileged group to abuse
+  microsoft.ad.user:
+    name: "{{ item }}"
+    groups:
+      set:
+      - "{{ group2_forest }}"
+      - "Usuarios del dominio"
+      - "Admins. del dominio"
+  loop:
+    - "{{ user2_forest }}"
+    - "{{ domain_admin_user_forest }}"
+      
+#- name: Add asreproast to user
+#  win_shell: Get-ADUser -Identity "{{ user1_forest }}" | Set-ADAccountControl -DoesNotRequirePreAuth:$true
+
+
+#- name: Add kerberoast to user
+#  win_shell: Set-ADUser -Identity "{{ user3 }}" -ServicePrincipalNames @{Add='"{{ kerberoast_service_principal_name }}"'}
+
+
+- name: Subir historial de Helena
+  win_copy:
+    src: ConsoleHost_history.txt
+    dest: 'C:\Users\{{ user2_forest }}\AppDAta\Roaming\Microsoft\Windows\PowerShell\PSReadLine\'

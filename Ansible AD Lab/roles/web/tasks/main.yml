@@ -1,0 +1,20 @@
+#Instalar servidor web
+- name: Verify Web Server Role is installed
+  win_feature:
+    name: Web-Server
+    state: present
+
+#Copy HTTP File
+
+- name: Remove iis files
+  win_shell: del C:\inetpub\wwwroot\iis*
+  ignore_errors: yes
+
+- name: Copy web files
+  win_copy: 
+    src: files/web/
+    dest: C:\inetpub\wwwroot
+  ignore_errors: yes
+
+- name: Reiniciamos el server
+  win_shell: iisreset /restart

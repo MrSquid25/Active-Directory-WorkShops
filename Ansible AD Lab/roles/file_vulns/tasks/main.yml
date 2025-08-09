@@ -1,0 +1,41 @@
+
+
+### SMB Shares creation ###
+
+- name: Ensure directory structure for vuln folder share exists
+  win_file:
+    path: 'C:\Shares\{{ vuln_folder }}'
+    state: directory
+
+- name: Ensure vuln folder share exists
+  win_share:
+    name: "{{ vuln_folder }}"
+    description: Shared Folder
+    path: 'C:\Shares\{{ vuln_folder }}'
+    list: yes
+    change: "{{ group_vuln_folder }}"
+    
+- name: Copy file
+  win_copy: 
+    src: README.md
+    dest: 'C:\Shares\{{ vuln_folder }}\README.md'
+
+- name: Disable inheritance for pdf file in vuln folder
+  win_acl_inheritance:
+    path: 'C:\Shares\{{ vuln_folder }}\README.md'
+    state: absent 
+
+- name: Copy web files
+  win_copy: 
+    src: files/web
+    dest: 'C:\Shares\{{ vuln_folder }}'
+  ignore_errors: yes 
+    
+- name: Add access to the txt file only to vuln group members
+  win_acl:
+    path: 'C:\Shares\{{ vuln_folder }}'  #\README.md'
+    user: "{{ group_vuln_folder }}"
+    rights: FullControl
+    type: allow
+    state: present
+

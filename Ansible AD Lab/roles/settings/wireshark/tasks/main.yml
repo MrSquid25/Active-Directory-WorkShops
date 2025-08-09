@@ -1,0 +1,19 @@
+
+- name: Copy Wireshark installer
+  win_copy: 
+    src: Wireshark.exe
+    dest: C:\
+
+- name: Copy npcap installer    
+  win_copy: 
+    src: npcap.exe
+    dest: C:\
+
+- name: Install Wireshark
+  win_shell: C:\Wireshark.exe /S
+
+#- name: Install npcap
+#  win_shell: C:\npcap.exe /S
+
+- name: Delete binaries
+  win_shell: del C:\Wireshark.exe #; del C:\npcap.exe

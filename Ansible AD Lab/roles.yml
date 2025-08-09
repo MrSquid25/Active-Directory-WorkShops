@@ -1,0 +1,22 @@
+# Add roles
+- hosts: windows
+  tasks:
+    - include_role:
+        name: web
+      when: "'servers_web' in group_names" #Deploy web configuration
+    - include_role: 
+        name: sql
+      when: "'servers_sql' in group_names" #Deploy sql configuration
+    - include_role: 
+        name: fileserver
+      when: "'servers_file' in group_names" #Deploy fileserver configuration
+
+#- hosts: clients #Install specific roles to a client machine
+#  tasks:
+#    - include_role:
+#        name: clients
+#      when: "'clients' in group_names"
+
+
+
+

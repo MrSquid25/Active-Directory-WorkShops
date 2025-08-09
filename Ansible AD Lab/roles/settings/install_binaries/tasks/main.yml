@@ -1,0 +1,25 @@
+# Binary installation 
+
+- name: Copy GoogleChrome installer
+  win_copy: 
+    src: ChromeSetup.exe
+    dest: C:\
+
+- name: Install Chrome
+  win_shell: C:\ChromeSetup.exe /silent /install
+
+- name: Delete binaries
+  win_shell: del C:\ChromeSetup.exe
+
+- name: Copy AdvancedIPScanner installer
+  win_copy: 
+    src: Advanced_IP_Scanner_2.5.4594.1.exe
+    dest: C:\
+
+- name: Install AdvancedIPScanner
+  win_shell: C:\Advanced_IP_Scanner_2.5.4594.1 .exe /verysilent /norestart
+    
+- name: Delete binaries
+  win_shell: del C:\Advanced_IP_Scanner_2.5.4594.1.exe
+  
+
